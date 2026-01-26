@@ -1,26 +1,11 @@
 import { csvParseRows } from 'd3-dsv';
 import type { FlatResult } from 'index-array-by';
 import indexBy from 'index-array-by';
+import type { Airport } from '@/pages/rtw/types';
 import airportsCSV from './airports-extended.dat?raw';
+import customLocationsCSV from './my_locations.dat?raw';
 
 console.log({ airportsCSV });
-
-export type Airport = {
-    airportId: string;
-    name: string;
-    city: string;
-    country: string;
-    iata: string;
-    icao: string;
-    lat: string;
-    lng: string;
-    alt: string;
-    timezone: string;
-    dst: string;
-    tz: string;
-    type: string;
-    source: string;
-};
 
 export const airportParse = ([
     airportId,
@@ -54,9 +39,12 @@ export const airportParse = ([
     source,
 });
 
-export const airports = csvParseRows(airportsCSV, airportParse);
-export const byIata = indexBy(airports, 'iata', false) as FlatResult;
-export const byId = indexBy(airports, 'airportId', false) as FlatResult;
+const airports = csvParseRows(airportsCSV, airportParse);
+const customLocations = csvParseRows(customLocationsCSV, airportParse);
+const allLocations = [...airports, ...customLocations];
+
+export const byIata = indexBy(allLocations, 'iata', false) as FlatResult;
+export const byId = indexBy(allLocations, 'airportId', false) as FlatResult;
 
 export const getFilteredAirports = (iataCodes: (keyof typeof byIata|string)[]): Airport[] => {
     return iataCodes

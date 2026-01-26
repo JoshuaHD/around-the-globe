@@ -1,16 +1,8 @@
 import type { GlobeProps } from 'react-globe.gl';
+import type { Trip } from '@/pages/rtw/types';
 
 const OPACITY = 0.7;
-type Trip = {
-    type: string | 'bus';
-    srcAirport: { lat: string; lng: string };
-    dstAirport: { lat: string; lng: string };
-    airline?: string;
-    srcIata?: string;
-    dstIata?: string;
-    route?: string;
-    visits?: number;
-} & any;
+
 export const initialRtwConfig: GlobeProps = {
     arcLabel: (d: Trip) => {
         if (d.type === 'bus') return `Bus: ${d.route}`;

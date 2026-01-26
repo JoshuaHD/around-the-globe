@@ -1,59 +1,59 @@
-import { useEffect, useRef, useState } from 'react';
+import {  Rotate3D } from 'lucide-react';
+import { useRef, useState } from 'react';
 import type { GlobeMethods, GlobeProps } from 'react-globe.gl';
 import Globe from 'react-globe.gl';
-import { fly } from '@/pages/rtw/actions';
-import { maps } from '@/pages/rtw/config';
-import ControlBar from '@/pages/rtw/ControlBar';
-import type { Airport} from '@/pages/rtw/data/airports';
-import { getFilteredAirports } from '@/pages/rtw/data/airports';
-
-const myAirports = getFilteredAirports([
-    'DUS',
-    'BAM',
-    'LPA',
-    'LEJ',
-    'ZUH',
-    'LEJ',
-    'BOG',
-    'BER',
-    'CEB',
-    'HAN',
-    'CEB',
-    'HAN',
-    'YYZ',
-]) as object[];
+import { maps } from '@/pages/rtw/config/config';
+import ControlBar from '@/pages/rtw/components/ControlBar';
+import locations from '@/pages/rtw/data/dataLoader'
+import type {
+    GlobeCallbackProps,
+} from '@/pages/rtw/types';
+import { useTravelAnimation } from '@/pages/rtw/hooks/useTravelAnimation';
 
 export default () => {
+    const baseData = locations.defaultLocation;
+
     const [config, setConfig] = useState<GlobeProps>({
-        globeImageUrl: maps.night,
-        pointsData: myAirports,
-        pointLabel: (d: Airport|any) => `${d.city} ${d.country}`,
+        globeImageUrl: maps.blue,
+        pointsData: baseData,
+        pointLabel: (d: GlobeCallbackProps ) => `${d.city} ${d.country}`,
         pointsMerge: true,
-        pointAltitude: 0.01,
+        pointAltitude: 0.005,
+
+        labelsData: baseData,
+        labelLat: (d: GlobeCallbackProps) => d.lat,
+        labelLng: (d: GlobeCallbackProps) => d.lng,
+        labelText: (d: GlobeCallbackProps) => d.city ?? 'no idea',
+        labelColor: () => 'rgba(255, 165, 0, 0.75)',
+        labelResolution: 2,
     });
-    //const [map, setMap] = useState<string>(maps.night);
+
     const globeEl = useRef<GlobeMethods | undefined>(undefined);
+    const { animate, getPointRadius, getLabelSize } = useTravelAnimation(globeEl);
 
-    useEffect(() => {
-        const animate = async () => {
-            if (!globeEl.current) return;
 
-            const moveTo = fly(globeEl);
-
-            for (const airport of myAirports) {
-                const lat = parseFloat((airport as Airport).lat);
-                const lng = parseFloat((airport as Airport).lng);
-                await moveTo(lat, lng, 1);
-            }
-        };
-
-        animate();
-    }, []);
-
+    const callbacks = {
+        labelSize: getLabelSize,
+        pointRadius: getPointRadius,
+    }
     return (
         <div>
-            <Globe ref={globeEl} {...config} />
-            <ControlBar config={config} setConfig={setConfig} globeRef={globeEl} />
+            <Globe
+                ref={globeEl}
+                {...config}
+                {...callbacks}
+            />
+            <ControlBar
+                config={config}
+                setConfig={setConfig}
+                globeRef={globeEl}
+                buttons={[
+                    {
+                        onClick: animate(baseData),
+                        icon: <Rotate3D />,
+                    },
+                ]}
+            />
         </div>
     );
 };

@@ -1,6 +1,6 @@
-import { maps } from '@/pages/rtw/config';
+import { maps } from '@/pages/rtw/config/config';
 import { Globe } from 'lucide-react';
-import { ControlButton } from '@/pages/rtw/ControlButton';
+import { ControlButton } from '@/pages/rtw/components/ControlButton';
 
 export const toggleMaps = (currentMap?: string|null) => {
     const mapValues = Object.values(maps);
