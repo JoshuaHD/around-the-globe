@@ -48,6 +48,6 @@ export const byId = indexBy(allLocations, 'airportId', false) as FlatResult;
 
 export const getFilteredAirports = (iataCodes: (keyof typeof byIata|string)[]): Airport[] => {
     return iataCodes
-        .map((code) => byIata[code as keyof typeof byIata])
+        .map((code) => ({ ...byIata[code as keyof typeof byIata] as object, iata: code }))
         .filter((airport) => airport !== undefined);
 }

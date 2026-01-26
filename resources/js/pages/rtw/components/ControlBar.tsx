@@ -8,10 +8,7 @@ type GlobeControlBar = {
     config: GlobeProps;
     setConfig: React.Dispatch<React.SetStateAction<GlobeProps>>;
     globeRef: React.RefObject<GlobeMethods | undefined>;
-    buttons?: {
-        onClick: () => void;
-        icon: React.ReactNode;
-    }[]
+    buttons?: ControlButton[]
 };
 
 export default ({ config, setConfig, globeRef, buttons }: GlobeControlBar) => {
@@ -36,7 +33,7 @@ export default ({ config, setConfig, globeRef, buttons }: GlobeControlBar) => {
             />
             <ControlButton onClick={goToNextCity} icon={<PlaneTakeoff />} />
             <ControlButton onClick={goHome} icon={<Home />} />
-            {buttons?.map((b, i) => <ControlButton key={i} onClick={b.onClick} icon={b.icon} />)}
+            {buttons?.map((b, i) => <ControlButton key={i} {...b} />)}
         </div>
     );
 };
