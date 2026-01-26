@@ -17,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/rtw', function () {
-    return Inertia::render('rtw/Globe', []);
+    return Inertia::render('rtw/Page', []);
 })->name('rtw');
 
 require __DIR__.'/settings.php';
