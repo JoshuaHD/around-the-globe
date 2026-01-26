@@ -1,0 +1,1 @@
+access this project through localhost:8000. The globe component has problems when accessed through the laravel-herd.test url
