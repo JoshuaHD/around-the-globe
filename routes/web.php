@@ -16,4 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::get('/rtw', function () {
+    return Inertia::render('rtw/Globe', []);
+})->name('rtw');
+
 require __DIR__.'/settings.php';
