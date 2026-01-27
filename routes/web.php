@@ -20,4 +20,6 @@ Route::get('/rtw', function () {
     return Inertia::render('rtw/Page', []);
 })->name('rtw');
 
+Route::get('/search/locations', [\App\Http\Controllers\LocationController::class, 'search'])->name('location.search');
+
 require __DIR__.'/settings.php';
