@@ -1,0 +1,10 @@
+900001,"Viersen","Viersen","Germany","loc-DE-VIE","loc-DE-VIE",51.2540,6.3940,40,1,"E","Europe/Berlin","city","CustomLocation"
+900002,"Kronach","Kronach","Germany","loc-DE-KC","loc-DE-KC",50.2390,11.3310,300,1,"E","Europe/Berlin","city","CustomLocation"
+900003,"Gotha","Gotha","Germany","loc-DE-GTH","loc-DE-GTH",50.9480,10.7010,300,1,"E","Europe/Berlin","city","CustomLocation"
+900004,"Hilongos","Hilongos","Philippines","loc-PH-HIL","loc-PH-HIL",10.3740,124.7490,10,1,"E","Asia/Manila","city","CustomLocation"
+900005,"La Balza","La Balza","Ecuador","loc-EC-LBZ","loc-EC-LBZ",0.9640,-79.6550,50,1,"E","America/Guayaquil","city","CustomLocation"
+900006,"Pedro Ruiz","Pedro Ruiz","Peru","loc-PE-PRZ","loc-PE-PRZ",-5.9420,-77.8200,1300,1,"E","America/Lima","city","CustomLocation"
+900007,"Kitchener","Kitchener","Canada","loc-CA-KIT","loc-CA-KIT",43.4516,-80.4925,329,1,"E","America/Toronto","city","CustomLocation"
+900008,"Halle (Saale)","Halle (Saale)","Germany","loc-DE-HAL","loc-DE-HAL",51.4828,11.9690,88,1,"E","Europe/Berlin","city","CustomLocation"
+900009,"Meloneras","Meloneras","Spain","loc-ES-MEL","loc-ES-MEL",27.7416,-15.6006,20,1,"E","Atlantic/Canary","city","CustomLocation"
+
