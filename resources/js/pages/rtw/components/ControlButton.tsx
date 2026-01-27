@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 
 export type ControlButton = {
-    onClick: () => Promise<void>|void;
+    onClick?: () => Promise<void>|void;
     icon?: React.ReactNode;
     className?: string;
 };
