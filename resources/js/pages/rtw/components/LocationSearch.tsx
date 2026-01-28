@@ -1,17 +1,16 @@
+import axios from 'axios';
 import {useEffect, useRef, useState} from 'react';
 import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
-import axios from 'axios';
+import {Badge} from '@/components/ui/badge';
 
 type LocationSearch = {
     value?: string,
-    onClick?:  React.Dispatch<React.SetStateAction<string>>;
+    onChange?:  React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default ({}: LocationSearch) => {
+export default ({value, onChange}: LocationSearch) => {
     const [open, setOpen] = useState(false);
-    const [searchInput, setSearchInput] = useState("");
-    const [selectedResult, setSelectedResult] = useState("");
+    const [searchInput, setSearchInput] = useState(value ?? "");
     const [results, setResults] = useState([]);
     const inputRef = useRef();
     const debounceRef = useRef();
@@ -67,13 +66,15 @@ export default ({}: LocationSearch) => {
                     <div
                         key={r.iata}
                         className="cursor-pointer px-3 py-2 hover:bg-accent"
-                        onClick={() => {
-                            setSelectedResult(r.iata);
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if(onChange)
+                                onChange(r.iata);
                             setSearchInput(r.iata);
                             setOpen(false);
                         }}
                     >
-                        <Label>{r.iata}</Label> {r.name}
+                        <Badge>{r.iata}</Badge> <Badge>{r.city}, {r.country}</Badge><br />{r.name}
                     </div>
                 ))}
             </div>
