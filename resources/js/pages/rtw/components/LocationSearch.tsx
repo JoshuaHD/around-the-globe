@@ -42,7 +42,7 @@ export default ({value, onChange}: LocationSearch) => {
         if(debounceRef.current)
             clearTimeout(debounceRef.current)
 
-        debounceRef.current = setTimeout(searchLocations(e.target.value), 1000);
+        debounceRef.current = setTimeout(searchLocations(e.target.value), 500);
     }
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export default ({value, onChange}: LocationSearch) => {
                             setOpen(false);
                         }}
                     >
-                        <Badge>{r.iata}</Badge> <Badge>{r.city}, {r.country}</Badge><br />{r.name}
+                        <Badge>{r.iata ?? "-"}</Badge> <Badge>{r.city}, {r.country}</Badge><br />{r.name}
                     </div>
                 ))}
             </div>

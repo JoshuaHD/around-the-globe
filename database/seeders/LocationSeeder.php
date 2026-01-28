@@ -17,6 +17,7 @@ class LocationSeeder extends Seeder
             'custom_locations.dat',
         ];
 
+        $locationsCount = 0;
         foreach ($files as $file) {
             $path = database_path("seeders/data/${file}" );
             $rows = array_map('str_getcsv', file($path));
@@ -37,19 +38,39 @@ class LocationSeeder extends Seeder
                 "source",
             ];
 
-            $mapped_rows = [];
+            $mappedRows = [];
 
             foreach ($rows as $row) {
                 if (count($row) != count($header))
                     continue;
+
+                $row = array_map(function ($col) {
+                    if ($col === '\N')
+                        return null;
+
+                    return $col;
+                }, $row);
+
+
                 //dd([$header, $row]);
-                $mapped_rows[] = array_combine($header, $row);
+                $row = array_combine($header, $row);
+
+                if(!$row['iata'])
+                    $row['iata'] = "Z-" . $row['id'];
+
+                $mappedRows[] = $row;
             }
 
             $this->command->info("Seeding " . $file);
-            Location::insertOrIgnore($mapped_rows);
-            $inserted_row_count = count($mapped_rows);
-            $this->command->info("Seeded ${inserted_row_count} rows from ${file}");
+            Location::insertOrIgnore($mappedRows);
+            $insertedRowCount = count($mappedRows);
+            $locationsCount += $insertedRowCount;
+            $this->command->info("Seeded ${insertedRowCount} rows from ${file}");
         }
+
+        $savedCount = Location::count();
+
+        if ($savedCount < $locationsCount)
+            $this->command->warn("Expected to have {$locationsCount} but only inserted {$savedCount}");
     }
 }
