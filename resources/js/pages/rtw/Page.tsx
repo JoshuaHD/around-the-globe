@@ -69,12 +69,7 @@ export default () => {
             <ControlBar
                 config={config}
                 setConfig={setConfig}
-                globeRef={globeEl}
                 buttons={[
-                    {
-                        onClick: animate(baseData),
-                        icon: <Rotate3D />,
-                    },
                     {
                         onClick: () => setSettings({
                             ...settings,
@@ -82,6 +77,10 @@ export default () => {
                         }),
                         icon: <RainbowIcon />,
                         className: (settings.showArcs) ? 'text-green-500' : ' text-red-500',
+                    },
+                    {
+                        onClick: animate(baseData),
+                        icon: <Rotate3D />,
                     },
                     {
                         onClick: openModal(
