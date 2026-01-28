@@ -60,10 +60,11 @@ class LocationSeeder extends Seeder
                 }
 
                 $mappedRows[] = $row;
+
+                Location::createQuietly($row);
             }
 
             $this->command->info('Seeding '.$file);
-            Location::insertOrIgnore($mappedRows);
             $insertedRowCount = count($mappedRows);
             $locationsCount += $insertedRowCount;
             $this->command->info("Seeded {$insertedRowCount} rows from {$file}");
