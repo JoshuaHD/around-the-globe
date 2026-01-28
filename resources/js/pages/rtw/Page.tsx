@@ -1,5 +1,6 @@
 import {EditIcon, RainbowIcon, Rotate3D, SearchIcon} from 'lucide-react';
-import {useEffect, useRef, useState} from 'react';
+import type { ReactNode} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type {GlobeMethods, GlobeProps} from 'react-globe.gl';
 import Globe from 'react-globe.gl';
 import ControlBar from '@/pages/rtw/components/ControlBar';
@@ -43,7 +44,7 @@ export default () => {
     const { animate, getPointRadius, getLabelSize } = useTravelAnimation(globeEl);
 
     const [open, setOpen] = useState(false);
-    const [modalContent, setModalContent] = useState(<></>);
+    const [modalContent, setModalContent] = useState<ReactNode>(<></>);
 
     const callbacks = {
         labelSize: getLabelSize,
