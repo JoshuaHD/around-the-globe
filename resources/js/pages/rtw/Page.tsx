@@ -93,7 +93,7 @@ export default () => {
                     },
                     {
                         icon: <SearchIcon />,
-                        onClick: openModal(<LocationSearch />)
+                        onClick: openModal(<LocationSearch autofocus={true} />)
                     }
                 ]}
             />

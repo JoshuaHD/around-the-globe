@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 type LocationSearch = {
     value?: string;
     onChange?: React.Dispatch<React.SetStateAction<string>>;
+    autofocus?: boolean;
 };
 
 type LocationSearchResult = {
@@ -17,7 +18,7 @@ type LocationSearchResult = {
     country: string;
 };
 
-export default ({ value, onChange }: LocationSearch) => {
+export default ({ value, onChange, autofocus }: LocationSearch) => {
     const [open, setOpen] = useState(false);
     const [searchInput, setSearchInput] = useState(value ?? '');
     const [results, setResults] = useState<LocationSearchResult[]>([]);
@@ -54,8 +55,9 @@ export default ({ value, onChange }: LocationSearch) => {
     }
 
     useEffect(() => {
-        inputRef.current?.focus();
-    }, []);
+        if(autofocus)
+            inputRef.current?.focus();
+    }, [autofocus]);
 
     return (
         <div className="relative w-80">
@@ -70,7 +72,7 @@ export default ({ value, onChange }: LocationSearch) => {
             />
 
             {open && results.length > 0 && (
-                <div className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-background text-foreground shadow">
+                <div className="absolute z-150 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-background text-foreground shadow">
                     {results.map((r) => (
                         <div
                             key={r.iata}
