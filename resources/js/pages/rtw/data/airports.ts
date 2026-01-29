@@ -5,8 +5,6 @@ import type { Airport } from '@/pages/rtw/types';
 import airportsCSV from './airports-extended.dat?raw';
 import customLocationsCSV from './my_locations.dat?raw';
 
-console.log({ airportsCSV });
-
 export const airportParse = ([
     airportId,
     name,
