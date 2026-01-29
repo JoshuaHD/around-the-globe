@@ -4,6 +4,14 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import {
+    Combobox,
+    ComboboxContent,
+    ComboboxEmpty,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxList,
+} from '@/components/ui/combobox';
 
 type LocationSearch = {
     value?: string;
@@ -47,53 +55,64 @@ export default ({ value, onChange, autofocus }: LocationSearch) => {
         }
     };
 
-    function handleSearch(e: ChangeEvent<HTMLInputElement>) {
-        setSearchInput(e.target.value);
+    function handleSearch(e: ChangeEvent<HTMLInputElement> | string) {
+        const searchNeedle = typeof e === 'string' ? e : e.target?.value;
+
+        if(!searchNeedle){
+            setResults([]);
+            return;
+        }
+        setSearchInput(searchNeedle);
         if (debounceRef.current) clearTimeout(debounceRef.current);
 
-        debounceRef.current = setTimeout(searchLocations(e.target.value), 500);
+        debounceRef.current = setTimeout(searchLocations(searchNeedle), 500);
     }
 
     useEffect(() => {
-        if(autofocus)
-            inputRef.current?.focus();
+        if (autofocus) inputRef.current?.focus();
     }, [autofocus]);
 
     return (
-        <div className="relative w-80">
-            <Input
+        <Combobox
+            items={results}
+            defaultInputValue={searchInput}
+            onInputValueChange={(e: string) => {
+                handleSearch(e);
+                setOpen(true);
+            }}
+            onValueChange={(value: string | null) => {
+                setOpen(false);
+                onChange?.(value ?? '');
+            }}
+            onOpenChange={() => {
+                handleSearch(searchInput);
+                setOpen(false);
+            }}
+        >
+            <ComboboxInput
+                placeholder="Search IATA or city"
                 ref={inputRef}
                 value={searchInput}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    handleSearch(e);
-                    setOpen(true);
-                }}
-                onFocus={() => setOpen(true)}
             />
-
-            {open && results.length > 0 && (
-                <div className="absolute z-150 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-background text-foreground shadow">
-                    {results.map((r) => (
-                        <div
-                            key={r.iata}
-                            className="cursor-pointer px-3 py-2 hover:bg-accent"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (onChange) onChange(r.iata);
-                                setSearchInput(r.iata);
-                                setOpen(false);
-                            }}
-                        >
-                            <Badge>{r.iata ?? '-'}</Badge>{' '}
-                            <Badge>
-                                {r.city}, {r.country}
-                            </Badge>
-                            <br />
-                            {r.name}
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+            <ComboboxContent>
+                <ComboboxEmpty>
+                    {open ? 'No items found.' : 'loading...'}
+                </ComboboxEmpty>
+                <ComboboxList>
+                    {(item: LocationSearchResult) => (
+                        <ComboboxItem key={item.iata} value={item.iata}>
+                            <div>
+                                <Badge>{item.iata ?? '-'}</Badge>{' '}
+                                <Badge>
+                                    {item.city}, {item.country}
+                                </Badge>
+                                <br />
+                                {item.name}
+                            </div>
+                        </ComboboxItem>
+                    )}
+                </ComboboxList>
+            </ComboboxContent>
+        </Combobox>
     );
 };

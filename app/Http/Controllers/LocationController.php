@@ -70,7 +70,7 @@ class LocationController extends Controller
         if ($request->has('q')) {
             $locations = $query->select(['id', 'iata', 'city', 'country', 'name'])
                 ->where(function ($query) use ($request) {
-                    $query->where('iata', $request->q)
+                    $query->where('iata', 'like', "{$request->q}%")
                         ->orWhere('city', 'like', "{$request->q}%")
                         ->orWhere('name', 'like', "%{$request->q}%");
                 })

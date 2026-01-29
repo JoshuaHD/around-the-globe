@@ -57,12 +57,12 @@ export const getFilteredAirports = (
                 return {
                     ...(byId[code.substring(2) as keyof typeof byId] as object),
                     iata: code,
-                };
+                } as Airport;
             } else {
                 return {
                     ...(byIata[code as keyof typeof byIata] as object),
                     iata: code,
-                };
+                } as Airport;
             }
         })
         .filter((airport) => airport !== undefined);
