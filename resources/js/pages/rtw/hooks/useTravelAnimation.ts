@@ -14,6 +14,10 @@ export const useTravelAnimation = (globeElRef: RefObject<GlobeMethods | undefine
 
     const abortControllerRef = useRef(true);
 
+    const resetAnimation = () => {
+        setVisitedCities({});
+    };
+
     const animate = (myAirports: Airport[]) => async () => {
         if (!globeElRef?.current) return;
         abortControllerRef.current = !abortControllerRef.current;
@@ -22,7 +26,7 @@ export const useTravelAnimation = (globeElRef: RefObject<GlobeMethods | undefine
 
         for (const airport of myAirports) {
             if (abortControllerRef.current) {
-                break;
+                return;
             }
 
             const lat = parseFloat(airport.lat);
@@ -34,6 +38,9 @@ export const useTravelAnimation = (globeElRef: RefObject<GlobeMethods | undefine
             }));
             await moveTo(lat, lng, 1);
         }
+
+        resetAnimation();
+        abortControllerRef.current = true;
     };
 
     function getPointRadius(d: GlobeCallbackProps) {
