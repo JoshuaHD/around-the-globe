@@ -63,25 +63,26 @@ class LocationController extends Controller
         //
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $query = Location::query();
 
-        if($request->has('q')){
+        if ($request->has('q')) {
             $locations = $query->select(['id', 'iata', 'city', 'country', 'name'])
                 ->where(function ($query) use ($request) {
                     $query->where('iata', $request->q)
                         ->orWhere('city', 'like', "{$request->q}%")
                         ->orWhere('name', 'like', "%{$request->q}%");
                 })
-                ->orderByRaw("CASE 
+                ->orderByRaw('CASE 
                         WHEN iata = ? THEN 3
                         WHEN city LIKE ? THEN 2
                         WHEN name LIKE ? THEN 1
                         ELSE 0
-                    END DESC", [
+                    END DESC', [
                     $request->q,
                     "{$request->q}%",
-                    "%{$request->q}%"
+                    "%{$request->q}%",
                 ])
                 ->limit(10)
                 ->get();
